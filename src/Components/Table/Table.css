@@ -1,0 +1,260 @@
+table{
+    padding: 10px;
+    z-index: 1;
+    position: relative;
+}
+tr:nth-child(odd) {
+    background-color:#eee;
+}
+tr:nth-child(even) {
+    background-color:#fff;
+}
+th{
+    background-color: #1abc9c;
+    color: white;
+}
+
+.genreContainer{
+    display: flex;
+    flex-direction: row;
+    padding: 0;
+    margin: 0;
+    flex-wrap: wrap;
+}
+/* @TODO: REUSE MOST OF THE BELOW STYLE CODE */
+/* NOTE: IT WOULD BE BETTER TO USE A LIBRARY THAT GENERATED COLORS or to make an array of objects
+and then filter through those for the styles of genre, right now only handles genres already there.
+As this is NOT a feature requested I will not be spending additional time on it unless I have time to refactor at the end */
+.Steak{
+    border: 2px solid blue; 
+    padding-right: 8px;
+    padding-left: 8px;
+    border-radius: 25px;
+    margin-left: 5px;
+}
+.American{
+    border: 2px solid red;
+    padding-right: 8px;
+    padding-left: 8px;
+    border-radius: 25px;
+    margin-left: 5px;
+}
+.Seafood{
+    border: 2px solid green;
+    padding-right: 8px;
+    padding-left: 8px;
+    border-radius: 25px;
+    margin-left: 5px;
+}
+.Italian{
+    border: 2px solid yellow;
+    padding-right: 8px;
+    padding-left: 8px;
+    border-radius: 25px;
+    margin-left: 5px;
+}
+.International{
+    border: 2px solid black;
+    padding-right: 8px;
+    padding-left: 8px;
+    border-radius: 25px;
+    margin-left: 5px;  
+}
+.Asian{
+    border: 2px solid brown;
+    padding-right: 8px;
+    padding-left: 8px;
+    border-radius: 25px;
+    margin-left: 5px; 
+}
+.Traditional{
+    border: 2px solid purple;
+    padding-right: 8px;
+    padding-left: 8px;
+    border-radius: 25px;
+    margin-left: 5px; 
+}
+.Cafe{
+    border: 2px solid pink;
+    padding-right: 8px;
+    padding-left: 8px;
+    border-radius: 25px;
+    margin-left: 5px; 
+}
+.European{
+    border: 2px solid orange;
+    padding-right: 8px;
+    padding-left: 8px;
+    border-radius: 25px;
+    margin-left: 5px;  
+}
+.French{
+    border: 2px solid darkblue;
+    padding-right: 8px;
+    padding-left: 8px;
+    border-radius: 25px;
+    margin-left: 5px;  
+}
+.Vegetarian{
+    border: 2px solid darkcyan;
+    padding-right: 8px;
+    padding-left: 8px;
+    border-radius: 25px;
+    margin-left: 5px;  
+}
+.Contemporary{
+    border: 2px solid darkred;
+    padding-right: 8px;
+    padding-left: 8px;
+    border-radius: 25px;
+    margin-left: 5px;    
+}
+.Belgian{
+    border: 2px solid blue;
+    padding-right: 8px;
+    padding-left: 8px;
+    border-radius: 25px;
+    margin-left: 5px;    
+}
+.Continental{
+    border: 2px solid goldenrod;
+    padding-right: 8px;
+    padding-left: 8px;
+    border-radius: 25px;
+    margin-left: 5px;    
+}
+.Oysters{
+    border: 2px solid purple;
+    padding-right: 8px;
+    padding-left: 8px;
+    border-radius: 25px;
+    margin-left: 5px; 
+}
+.Sushi{
+    border: 2px solid black;
+    padding-right: 8px;
+    padding-left: 8px;
+    border-radius: 25px;
+    margin-left: 5px; 
+}
+.Bistro{
+    border: 2px solid green;
+    padding-right: 8px;
+    padding-left: 8px;
+    border-radius: 25px;
+    margin-left: 5px; 
+}
+.Coffee{
+    border: 2px solid brown;
+    padding-right: 8px;
+    padding-left: 8px;
+    border-radius: 25px;
+    margin-left: 5px; 
+}
+.Hawaiian{
+    border: 2px solid grey;
+    /* background-color: gainsboro; */
+    /* color: white; */
+    padding-right: 8px;
+    padding-left: 8px;
+    border-radius: 25px;
+    margin-left: 5px; 
+}
+.Bakery{
+    border: 2px solid sienna;
+    padding-right: 8px;
+    padding-left: 8px;
+    border-radius: 25px;
+    margin-left: 5px; 
+}
+.Irish{
+    border: 2px solid rgb(161, 78, 194);
+    padding-right: 8px;
+    padding-left: 8px;
+    border-radius: 25px;
+    margin-left: 5px; 
+}
+.Japanese{
+    border: 2px solid rgb(183, 162, 241);
+    padding-right: 8px;
+    padding-left: 8px;
+    border-radius: 25px;
+    margin-left: 5px;  
+}
+.Grill{
+    border: 2px solid rgb(241, 162, 192);
+    padding-right: 8px;
+    padding-left: 8px;
+    border-radius: 25px;
+    margin-left: 5px;  
+}
+.Polynesian{
+    border: 2px solid rgb(241, 162, 192);
+    padding-right: 8px;
+    padding-left: 8px;
+    border-radius: 25px;
+    margin-left: 5px; 
+}
+.Sandwiches{
+    border: 2px solid yellowgreen;
+    padding-right: 8px;
+    padding-left: 8px;
+    border-radius: 25px;
+    margin-left: 5px;
+}
+.Vietnamese{
+    border: 2px solid paleturquoise;
+    padding-right: 8px;
+    padding-left: 8px;
+    border-radius: 25px;
+    margin-left: 5px; 
+}
+.Eclectic{
+    border: 2px solid peachpuff;
+    padding-right: 8px;
+    padding-left: 8px;
+    border-radius: 25px;
+    margin-left: 5px;
+}
+.British{
+    border: 2px solid darkcyan;
+    padding-right: 8px;
+    padding-left: 8px;
+    border-radius: 25px;
+    margin-left: 5px;
+}
+.Pasta{
+    border: 2px solid darkolivegreen;
+    padding-right: 8px;
+    padding-left: 8px;
+    border-radius: 25px;
+    margin-left: 5px; 
+}
+.Pacific.Rim{
+    border: 2px solid orangered;
+    padding-right: 8px;
+    padding-left: 8px;
+    border-radius: 25px;
+    margin-left: 5px;   
+}
+.Fusion{
+    border: 2px solid fuchsia;
+    padding-right: 8px;
+    padding-left: 8px;
+    border-radius: 25px;
+    margin-left: 5px;   
+}
+.Kosher{
+    border: 2px solid orange;
+    padding-right: 8px;
+    padding-left: 8px;
+    border-radius: 25px;
+    margin-left: 5px;  
+}
+.Tea{
+    border: 2px solid fuchsia;
+    padding-right: 8px;
+    padding-left: 8px;
+    border-radius: 25px;
+    margin-left: 5px;  
+}
