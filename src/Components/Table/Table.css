@@ -2,6 +2,7 @@ table{
     padding: 10px;
     z-index: 1;
     position: relative;
+    width: 100%;
 }
 tr:nth-child(odd) {
     background-color:#eee;
