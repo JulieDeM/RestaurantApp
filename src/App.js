@@ -37,6 +37,7 @@ class App extends React.Component {
       })
       .then((response) => response.json())
       .then((restaurants) => {
+        console.log(restaurants)
       // sort by name, no filter required on name so sorted here
       restaurants.sort(function(a, b) {
         let prevName = a.name.toUpperCase(); 

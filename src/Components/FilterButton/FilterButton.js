@@ -18,7 +18,7 @@ export default class FilterButton extends React.Component{
         
         // let checkStates = this.props.options && this.props.options.map(filtered => { return filtered});
         console.log('options')
-        // console.log(checkStates)
+        // console.log(checkState
     
         //create genre array
         let genreArray = [];
@@ -47,18 +47,23 @@ export default class FilterButton extends React.Component{
                 <p className="filterHeader">States</p>
                 <span className="state-list">
                     {stateAbreviationArray.map(state => {
-                        return (
-                            <span key={state + 'state'} style={{display: 'flex', flexDirection: 'row'}}>
-                                <input 
-                                key={state}
-                                value={state}
-                                type="checkbox" 
-                                // checked={this.props.filteredList}
-                                // checked={checkStates.includes(state) ? true : false }
-                                onClick={(search) => this.props.filterResults(state)} 
-                                /> {state}
-                            </span>
-                        )
+                        return ( 
+                        <select onChange={this.props.filterResults(state)} value={state}>
+                            {this.props.restaurants.map(item => (
+                                <option key={item.id} value={item.state}>{item.state} </option>
+                            ))}
+                        </select>
+                        //     <span key={state + 'state'} style={{display: 'flex', flexDirection: 'row'}}>
+                        //         <input 
+                        //         key={state}
+                        //         value={state}
+                        //         type="checkbox" 
+                        //         // checked={this.props.filteredList}
+                        //         // checked={checkStates.includes(state) ? true : false }
+                        //         onClick={(search) => this.props.filterResults(state)} 
+                        //         /> {state}
+                        //     </span>
+                        // )
                     })}
                 </span>
                 <p className="filterHeader">Genre</p>
