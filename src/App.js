@@ -11,15 +11,21 @@ class App extends React.Component {
       searchString: "",
       filtered: [],
       openFilterMenu: false,
+      restaurantPagination: null,
+      total: null,
+      pagesNeeded: null,
+      perPage: 10,
+      currentPage: 1
     };
     this.fetchData = this.fetchData.bind(this);
   }  
 
   componentDidMount(){
     this.fetchData();
+    // this.fetchData(1);
   }
 
-  fetchData(){
+  fetchData(pageNumb){
     const apiUrl = 'https://code-challenge.spectrumtoolbox.com/api/restaurants';
     return fetch(apiUrl, {
         headers : { 
@@ -43,7 +49,24 @@ class App extends React.Component {
         }
         return 0;
       });
-        this.setState({ restaurants: restaurants, filtered: restaurants });
+      console.log('this.state.restaurants.length')
+      console.log(restaurants.length)
+      //determine number of pages needed for 10 results each page minimum
+      const pageNumbers = [];
+        for (let i = 1; i <= Math.ceil(restaurants.length / 10); i++) {
+            pageNumbers.push(i);
+        }
+        console.log('page numbers')
+        console.log(pageNumbers)
+        this.setState({ 
+          restaurants: restaurants,
+          filtered: restaurants,
+          restaurantPagination: restaurants,
+          total: restaurants.length,
+          perPage: 10,
+          pagesNeeded: pageNumbers,
+          currentPage: pageNumb,
+        });
       });
   };
 
@@ -55,10 +78,13 @@ class App extends React.Component {
     });
   };
 
-  onInputChange(restaurant){
-    if(restaurant){
-      this.setState({searchString: restaurant})
-    }
+  onInputChange(event){
+    console.log('event')
+    console.log(event)
+    this.setState({searchString: event.target.value.substr(0, 20)})
+    // if(restaurant){
+    //   this.setState({searchString: restaurant})
+    // }
   }
 
   //@TODO: HANDLE SEARCHABILITY 
@@ -75,19 +101,52 @@ class App extends React.Component {
     })
   }
 
+//   setPage(page) {
+//     let restaurants = this.props.items;
+//     var pager = this.state.pager;
+
+//     if (page < 1 || page > pager.totalPages) {
+//         return;
+//     }
+
+//     // get new pager object for specified page
+//     pager = this.getPager(items.length, page);
+
+//     // get new page of items from items array
+//     var pageOfItems = items.slice(pager.startIndex, pager.endIndex + 1);
+
+//     // update state
+//     this.setState({ pager: pager });
+
+//     // call change page function in parent component
+//     this.props.onChangePage(pageOfItems);
+// }
+
+  filter
   render() {
+    let filteredRestaurants = this.state.restaurants.filter( restaurant => {
+      return restaurant.name.indexOf(this.state.searchString) !== -1 
+      || restaurant.genre.indexOf(this.state.searchString) !== -1 
+      || restaurant.state.indexOf(this.state.searchString) !== -1
+    });
     return (
       <div className="App">
         <Header
-         handleChange={this.onInputChange}
+         handleChange={this.onInputChange.bind(this)}
          searchString={this.state.searchString}
          resetSearch={this.resetSearch}
-         restaurants={this.state.restaurants}
+        //  restaurants={this.state.restaurants}
+        restaurants={this.state.restaurantPagination}
          openFilterMenu={this.state.openFilterMenu}
          handleFilterMenuButton={this.handleFilterMenuButton}
          />
         <div className="Main">
-          <Table restaurants={this.state.restaurants}/>
+          <Table 
+          restaurants={filteredRestaurants}
+          fetchData={this.fetchData}
+          pagesNeeded={this.state.pagesNeeded}
+          currentPage={this.state.currentPage}
+          />
         </div>
       </div>
     );
