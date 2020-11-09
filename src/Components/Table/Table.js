@@ -57,15 +57,6 @@ export default class Table extends React.Component{
     })
   };
 
-  // renderPagination = () => {
-  //   this.props.pagesNeeded && this.props.pagesNeeded.map(num => {
-  //     let activePage = this.props.currentPage === num ? 'active' : '';
-  //     return (
-  //       <span key={num} className={activePage} onClick={() => this.props.fetchData(num)}>{num}</span>
-  //     );
-  //   })
-  // }
-
   render(){
     return (
       <div>
@@ -89,7 +80,7 @@ export default class Table extends React.Component{
               <span key={num} className={activePage} onClick={() => this.props.changePage(num)}>{num}</span>
             );
           })}
-          <p className="results-per-page">Results: {this.props.restaurants.length}</p>
+          <p className="results-per-page">Results on this page: {this.props.restaurants.length}</p>
         </div>
       </div>
     )
