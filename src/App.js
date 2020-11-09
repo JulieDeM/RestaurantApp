@@ -67,7 +67,6 @@ class App extends React.Component {
           perPage: 10,
           pagesNeeded: pageNumbers,
           currentPage: 1,
-          // filterList: restaurants,
           currentRestaurants: currentRestaurants
         });
       });
@@ -87,6 +86,7 @@ class App extends React.Component {
       || restaurant.genre.indexOf(this.state.searchString) !== -1 
       || restaurant.state.indexOf(this.state.searchString) !== -1
     });
+    
     const pageNumbers = [];
     for (let i = 1; i <= Math.ceil(filteredRestaurants.length / 10); i++) {
         pageNumbers.push(i);
@@ -115,11 +115,17 @@ class App extends React.Component {
       || restaurant.city.toLowerCase().indexOf(this.state.searchString) !== -1
       || restaurant.city.toUpperCase().indexOf(this.state.searchString) !== -1
     });
+    //
+    const pageNumbers = [];
+    for (let i = 1; i <= Math.ceil(filteredRestaurants.length / 10); i++) {
+        pageNumbers.push(i);
+    }
+
     this.setState({
       filter: filteredRestaurants,
       searchString: event.target.value.substr(0, 20),
-      // enteredText: event.target.value.substr(0, 20),
       filteredRestaurants: filteredRestaurants, 
+      pagesNeeded: pageNumbers //update page numbers needed
       // options: [event.target.value.substr(0, 20)]
     })
     }
@@ -133,10 +139,15 @@ class App extends React.Component {
 
   //reset search from button click 
   resetSearch = () => {
+    const pageNumbers = [];
+    for (let i = 1; i <= Math.ceil(this.state.restaurants.length / 10); i++) {
+        pageNumbers.push(i);
+    }
     this.setState({
       searchString: '',
       enteredText: '',
-      filteredRestaurants: this.state.restaurants
+      filteredRestaurants: this.state.restaurants,
+      pagesNeeded: pageNumbers //reset page numbers needed
     })
   };
 
