@@ -22,6 +22,9 @@ export default class Header extends React.Component {
             handleFilterMenuButton={this.props.handleFilterMenuButton}
             openFilterMenu={this.props.openFilterMenu}
             restaurants={this.props.restaurants}
+            filterResults={this.props.filterResults}
+            activeFilter={this.props.activeFilter}
+            filterList={this.props.filterList}
           />
           <SearchInput
             handleChange={this.props.handleChange}

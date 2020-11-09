@@ -8,21 +8,27 @@ class App extends React.Component {
     super(props);
     this.state = {
       restaurants: [],
+      filteredRestaurants: [],
       searchString: "",
-      filtered: [],
+      enteredText: "",
+      filtered: [] ,
       openFilterMenu: false,
       restaurantPagination: null,
       total: null,
       pagesNeeded: null,
       perPage: 10,
-      currentPage: 1
+      currentPage: 1,
+      checkedAllStates: "checked",
+      filters: [],
+      genre: [],
+      state: [],
+      activeFilter: []
     };
     this.fetchData = this.fetchData.bind(this);
   }  
 
   componentDidMount(){
     this.fetchData();
-    // this.fetchData(1);
   }
 
   fetchData(pageNumb){
@@ -33,7 +39,6 @@ class App extends React.Component {
           'Accept': 'application/json',
           'Authorization': 'Api-Key q3MNxtfep8Gt',
          }
-  
       })
       .then((response) => response.json())
       .then((restaurants) => {
@@ -49,23 +54,28 @@ class App extends React.Component {
         }
         return 0;
       });
-      console.log('this.state.restaurants.length')
-      console.log(restaurants.length)
       //determine number of pages needed for 10 results each page minimum
       const pageNumbers = [];
         for (let i = 1; i <= Math.ceil(restaurants.length / 10); i++) {
             pageNumbers.push(i);
         }
-        console.log('page numbers')
-        console.log(pageNumbers)
+
+    //get current restaurants
+    const indexOfLastRestaurant = 1 * 10;
+    const indexOfFirstRestaurant = indexOfLastRestaurant - 10;
+    const currentRestaurants = restaurants.slice(indexOfFirstRestaurant, indexOfLastRestaurant );
+
         this.setState({ 
           restaurants: restaurants,
           filtered: restaurants,
+          filteredRestaurants: restaurants,
           restaurantPagination: restaurants,
           total: restaurants.length,
           perPage: 10,
           pagesNeeded: pageNumbers,
-          currentPage: pageNumb,
+          currentPage: 1,
+          filterList: restaurants,
+          currentRestaurants: currentRestaurants
         });
       });
   };
@@ -78,74 +88,152 @@ class App extends React.Component {
     });
   };
 
-  onInputChange(event){
-    console.log('event')
-    console.log(event)
-    this.setState({searchString: event.target.value.substr(0, 20)})
-    // if(restaurant){
-    //   this.setState({searchString: restaurant})
-    // }
-  }
-
-  //@TODO: HANDLE SEARCHABILITY 
-  //   // handleSearchChange = event => {
-    //search results should filter name, city or genre and return 10 
-//   //   this.setState({
-//   //     filteredTable: filterRestaurants(event.target.value, 10)
-//   //   });
-//   // };
-
-  resetSearch = () =>{
-    this.setState({
-      searchString: ''
-    })
-  }
-
-//   setPage(page) {
-//     let restaurants = this.props.items;
-//     var pager = this.state.pager;
-
-//     if (page < 1 || page > pager.totalPages) {
-//         return;
-//     }
-
-//     // get new pager object for specified page
-//     pager = this.getPager(items.length, page);
-
-//     // get new page of items from items array
-//     var pageOfItems = items.slice(pager.startIndex, pager.endIndex + 1);
-
-//     // update state
-//     this.setState({ pager: pager });
-
-//     // call change page function in parent component
-//     this.props.onChangePage(pageOfItems);
-// }
-
-  filter
-  render() {
+  handleSearch(event){
+    // console.log(event.type)
+    // let code = event.keyCode || event.which;
+    // console.log(code)
+    // if(event.type === 'click' || event.type === 'onKeyPress'){
+    // if(code === 13 || event.type === 'click' ) { //13 is the enter keycode
     let filteredRestaurants = this.state.restaurants.filter( restaurant => {
       return restaurant.name.indexOf(this.state.searchString) !== -1 
       || restaurant.genre.indexOf(this.state.searchString) !== -1 
       || restaurant.state.indexOf(this.state.searchString) !== -1
     });
+    const pageNumbers = [];
+    for (let i = 1; i <= Math.ceil(filteredRestaurants.length / 10); i++) {
+        pageNumbers.push(i);
+    }
+    this.setState({
+      searchString: event.target.value.substr(0, 20),
+      enteredText: event.target.value.substr(0, 20),
+      filteredRestaurants: filteredRestaurants,
+      pagesNeeded: pageNumbers
+    })
+    // }
+  };
+
+  onInputChange(event){
+    // console.log(event.type)
+     //@TODO: HANDLE SEARCH BUTTON
+    let code = event.keyCode || event.which;
+    if(code === 13 || event.type === 'click' ) { //13 is the enter keycode
+    let filteredRestaurants = this.state.restaurants.filter( restaurant => {
+      return restaurant.name.toLowerCase().indexOf(this.state.searchString) !== -1 
+      || restaurant.genre.toLowerCase().indexOf(this.state.searchString) !== -1 
+      || restaurant.state.toLowerCase().indexOf(this.state.searchString) !== -1
+      || restaurant.city.toLowerCase().indexOf(this.state.searchString) !== -1
+    });
+    this.setState({
+      searchString: event.target.value.substr(0, 20),
+      enteredText: event.target.value.substr(0, 20),
+      filteredRestaurants: filteredRestaurants
+    })
+    }
+  };
+
+  onEnteredText(event){
+    this.setState({enteredText:event.target.value.substr(0, 20) })
+  };
+
+  resetSearch = () =>{
+    this.setState({
+      searchString: '',
+      enteredText: '',
+      filteredRestaurants: this.state.restaurants
+    })
+  };
+
+   //@TODO: FILTERING 
+  filterResults(type, val){
+    // console.log(type)
+    const { genre, state } = this.state;
+    // this.state.restaurants.filter(val => {
+    //   return (genre.length && genre.includes(val.genre)) ||
+    //   (state.length && state.includes(val.state)) 
+    //   })
+    // };
+    let filteredRestaurants = this.state.filteredRestaurants.filter( restaurant => {
+      return restaurant.name.indexOf(genre) !== -1 
+      || restaurant.genre.indexOf(state) !== -1 
+    });
+    // this.setState({
+    //   // genre: val,
+    //   filteredRestaurants: filteredRestaurants
+    // })
+  };
+
+   //@TODO: FILTERING 
+  onFilterChange(filter) {
+    const { filterList, activeFilter } = this.state;
+    if (filter === "ALL") {
+      if (activeFilter.length === filterList.length) {
+        this.setState({ activeFilter: [] });
+      } else {
+        this.setState({ activeFilter: filterList.map(filter => filter.value) });
+      }
+    } else {
+      if (activeFilter.includes(filter)) {
+        const filterIndex = activeFilter.indexOf(filter);
+        const newFilter = [...activeFilter];
+        newFilter.splice(filterIndex, 1);
+        this.setState({ activeFilter: newFilter });
+      } else {
+        this.setState({ activeFilter: [...activeFilter, filter] });
+      }
+    }
+  }
+
+  changePage(pageNumb){
+    this.setState({
+      currentPage: pageNumb
+    })
+  }
+  
+  render() {
+    //get current restaurants
+    const indexOfLastRestaurant = this.state.currentPage * this.state.perPage;
+    const indexOfFirstRestaurant = indexOfLastRestaurant - this.state.perPage;
+    const currentRestaurants = this.state.filteredRestaurants.slice(indexOfFirstRestaurant, indexOfLastRestaurant );
+
+
+    //@TODO: FILTERING 
+    //filtering 
+    const { filterList, activeFilter } = this.state;
+    let filteredList;
+    if (
+      activeFilter.length === 0 ||
+      activeFilter.length === filterList.length
+    ) {
+      filteredList = this.state.restaurants;
+    } else {
+      filteredList = this.state.restaurants.filter(item =>
+        this.state.activeFilter.includes(item.state)
+      );
+    }
     return (
       <div className="App">
         <Header
          handleChange={this.onInputChange.bind(this)}
          searchString={this.state.searchString}
+         enteredText={this.state.enteredText}
+         handleTextChange={this.onEnteredText.bind(this)}
          resetSearch={this.resetSearch}
-        //  restaurants={this.state.restaurants}
-        restaurants={this.state.restaurantPagination}
+         restaurants={this.state.restaurantPagination}
          openFilterMenu={this.state.openFilterMenu}
          handleFilterMenuButton={this.handleFilterMenuButton}
+         checkedAllStates={this.state.checkedAllStates}
+         handleSearch={this.handleSearch.bind(this)}
+         filterResults={this.onFilterChange.bind(this)}
+         activeFilter={activeFilter}
+         filterList={filterList}
          />
         <div className="Main">
           <Table 
-          restaurants={filteredRestaurants}
+          restaurants={currentRestaurants}
           fetchData={this.fetchData}
           pagesNeeded={this.state.pagesNeeded}
           currentPage={this.state.currentPage}
+          changePage={this.changePage.bind(this)}
           />
         </div>
       </div>

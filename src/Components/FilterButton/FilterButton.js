@@ -2,7 +2,6 @@ import React from 'react';
 
 import './FilterButton.css';
 import logo from './filter.svg'; 
-import { wrap } from 'module';
 
 export default class FilterButton extends React.Component{
 
@@ -17,17 +16,6 @@ export default class FilterButton extends React.Component{
             'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'OH',
             'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY'
         ];
-        // stateAbreviationArray.sort();
-        console.log(stateAbreviationArray)
-    //     let restaurantArray = [];
-    //     // eslint-disable-next-line
-    //     this.props.restaurants.map(restaurant => { 
-    //       if(restaurantArray.indexOf(restaurant.state) === -1) {
-    //         //sort the restaurants alphabetically so easier to filter then push to new array used
-    //        restaurantArray.push(restaurant.state);
-    //        restaurantArray.sort();
-    //     }
-    // })
 
         //create genre array
         let genreArray = [];
@@ -48,26 +36,37 @@ export default class FilterButton extends React.Component{
             <>
                 <p className="filterHeader">States</p>
                 <span style={{display: 'flex', flexDirection: 'column', height: '255px', flexWrap: 'wrap', overflow: 'wrap'}}>
-                    <span style={{display: 'flex', flexDirection: 'row'}}>
-                        <input type="checkbox"  value="checkedAllStates" /> Show All
-                    </span>
+                    {/* <span style={{display: 'flex', flexDirection: 'row'}}>
+                        <input type="checkbox"  
+                        value="checkedAllStates" 
+                        checked={this.props.checkedAllStates}
+                        onClick={console.log('clicked')} /> Show All
+                    </span> */}
                     {stateAbreviationArray.map(state => {
                         return (
                         <span style={{display: 'flex', flexDirection: 'row'}}>
-                            <input key={state} type="checkbox"  value={state} /> {state}
+                            <input key={state} type="checkbox"  value={state} checked={this.props.filterResults(state, state)} /> {state}
                         </span>
                         )
                     })}
                 </span>
                 <p className="filterHeader">Genre</p>
                 <span style={{display: 'flex', flexDirection: 'column', height: '300px', flexWrap: 'wrap', overflow: 'wrap'}}>
-                    <span style={{display: 'flex', flexDirection: 'row'}}>
-                     <input type="checkbox"  value="checkedAllGenres" /> Show All
-                    </span>
+                {this.props.filterList.map(filter => (
+            <React.Fragment>
+              <label htmlFor={filter.id}>{filter.name}</label>
+              <input
+                id={filter.id}
+                type="checkbox"
+                checked={this.props.activeFilter.includes(filter.value)}
+                onClick={() => this.props.onFilterChange(filter.value)}
+              />
+            </React.Fragment>
+          ))}
                     {genreArray.map(genre => {
                         return (
                         <span style={{display: 'flex', flexDirection: 'row'}}>
-                            <input key={genre} type="checkbox" value={genre} /> {genre}
+                            <input key={genre} type="checkbox" value={genre} onClick={this.props.filterResults(genre, genre)} /> {genre}
                         </span>
                         )
                     })}

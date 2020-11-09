@@ -15,20 +15,26 @@ export default class SearchInput extends PureComponent {
           <div className="search-container">
             <input 
             type="text"
-            onChange={this.props.handleChange}
-            value={this.props.searchString}
+            onChange={this.props.handleTextChange}
+            onKeyPress={this.props.handleChange}
+            onKeyDown={this.props.handleChange}
+            value={this.props.enteredText}
             placeholder="Type Something..."
             id="search"
             />
-            <span>
-              <button 
+              {this.props.searchString && (
+                <span>
+                    <button 
               className="clearSearch"
-              onClick={this.props.resetSearch}>x</button>
+              onClick={this.props.resetSearch}
+              onKeyUp={this.props.resetSearch}>x</button>
             </span>
+              )}
             <span>
               <button 
               className="searchButton"
-              onClick={this.props.resetSearch}>Search</button>
+              onClick={this.props.handleSearch}
+              >Search</button>
             </span>
           </div>
         </div>
