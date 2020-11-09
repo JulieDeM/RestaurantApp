@@ -16,7 +16,9 @@ export default class FilterButton extends React.Component{
             'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY'
         ];
         
-        // let checkStates = this.props.filterList.map(filtered => { return filtered.state});
+        let checkStates = this.props.options && this.props.options.map(filtered => { return filtered});
+        console.log('options')
+        console.log(checkStates)
     
         //create genre array
         let genreArray = [];
@@ -51,6 +53,8 @@ export default class FilterButton extends React.Component{
                                 key={state}
                                 value={state}
                                 type="checkbox" 
+                                // checked={this.props.filteredList.includes(state)? true : false}
+                                // checked={checkStates.includes(state) ? true : false }
                                 onClick={(search) => this.props.filterResults(state)} 
                                 /> {state}
                             </span>

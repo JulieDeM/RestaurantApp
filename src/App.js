@@ -82,10 +82,18 @@ class App extends React.Component {
 
   handleSearch = event => {
     let filteredRestaurants = this.filteredRestaurants.restaurants.filter( restaurant => {
-      return restaurant.name.indexOf(this.state.searchString) !== -1 
+      return  restaurant.name.indexOf(this.state.searchString) !== -1 ||
+      restaurant.name.toLowerCase().indexOf(this.state.searchString) !== -1 ||
+      restaurant.name.toLowerCase().indexOf(this.state.searchString) !== -1 
       || restaurant.genre.indexOf(this.state.searchString) !== -1 
-      || restaurant.state.indexOf(this.state.searchString) !== -1
+      || restaurant.genre.toLowerCase().indexOf(this.state.searchString) !== -1 
+      || restaurant.genre.toUpperCase().indexOf(this.state.searchString) !== -1 
+      || restaurant.state.toLowerCase().indexOf(this.state.searchString) !== -1
+      || restaurant.state.toUpperCase().indexOf(this.state.searchString) !== -1
+      || restaurant.city.toLowerCase().indexOf(this.state.searchString) !== -1
+      || restaurant.city.toUpperCase().indexOf(this.state.searchString) !== -1
     });
+
     
     const pageNumbers = [];
     for (let i = 1; i <= Math.ceil(filteredRestaurants.length / 10); i++) {
@@ -147,7 +155,8 @@ class App extends React.Component {
       searchString: '',
       enteredText: '',
       filteredRestaurants: this.state.restaurants,
-      pagesNeeded: pageNumbers //reset page numbers needed
+      pagesNeeded: pageNumbers, //reset page numbers needed
+      options: []
     })
   };
 
@@ -210,6 +219,7 @@ class App extends React.Component {
          filterResults={this.onFilterChange.bind(this)}
          filterList={this.state.filteredRestaurants}
          handleCheckbox={this.handleCheckbox.bind(this)}
+         options={this.state.options}
          />
         <div className="Main">
           <Table 
