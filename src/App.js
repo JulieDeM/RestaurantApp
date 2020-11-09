@@ -114,12 +114,14 @@ class App extends React.Component {
       //@TODO: REFACTOR CODE BELOW 
       return restaurant.name.indexOf(this.state.searchString) !== -1 ||
       restaurant.name.toLowerCase().indexOf(this.state.searchString) !== -1 ||
-      restaurant.name.toLowerCase().indexOf(this.state.searchString) !== -1 
+      restaurant.name.toUpperCase().indexOf(this.state.searchString) !== -1 
       || restaurant.genre.indexOf(this.state.searchString) !== -1 
       || restaurant.genre.toLowerCase().indexOf(this.state.searchString) !== -1 
       || restaurant.genre.toUpperCase().indexOf(this.state.searchString) !== -1 
+      || restaurant.state.indexOf(this.state.searchString) !== -1
       || restaurant.state.toLowerCase().indexOf(this.state.searchString) !== -1
       || restaurant.state.toUpperCase().indexOf(this.state.searchString) !== -1
+      || restaurant.city.indexOf(this.state.searchString) !== -1
       || restaurant.city.toLowerCase().indexOf(this.state.searchString) !== -1
       || restaurant.city.toUpperCase().indexOf(this.state.searchString) !== -1
     });
