@@ -5,13 +5,6 @@ import SearchInput from '../SearchInput/SearchInput';
 import FilterButton from '../FilterButton/FilterButton';
 
 export default class Header extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-        checkboxes: [],
-        filter: 'ALL'
-    };
-}
 
   render() {
     return (
@@ -20,15 +13,17 @@ export default class Header extends React.Component {
         <div className="searchContainer" >
           <FilterButton 
             handleFilterMenuButton={this.props.handleFilterMenuButton}
-            openFilterMenu={this.props.openFilterMenu}
+            openFilterMenu={this.props.openFilterMenu} //need
             restaurants={this.props.restaurants}
             filterResults={this.props.filterResults}
-            activeFilter={this.props.activeFilter}
             filterList={this.props.filterList}
+            handleCheckbox={this.props.handleCheckbox}
+            resetSearch={this.props.resetSearch}
           />
           <SearchInput
             handleChange={this.props.handleChange}
             searchString={this.props.searchString}
+            // enteredText={this.props.enteredText}
             resetSearch={this.props.resetSearch}
           />
         </div>

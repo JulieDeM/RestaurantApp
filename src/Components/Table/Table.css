@@ -260,9 +260,7 @@ As this is NOT a feature requested I will not be spending additional time on it 
     margin-left: 5px;  
 }
 
-
 .pagination {
-    /* margin-top: 5px; */
     align-content: center;
     margin-left: 10px;
     margin-top: 5px;
@@ -270,7 +268,6 @@ As this is NOT a feature requested I will not be spending additional time on it 
     margin-right: 10px;
     border-top: 2px solid #1abc9c;
     border-bottom: 2px solid #1abc9c;
-    /* background: #1abc9c; */
 }
 .pagination span {
   cursor: pointer;
@@ -298,12 +295,10 @@ As this is NOT a feature requested I will not be spending additional time on it 
 .noResults{
     align-content: center;
     margin: auto;
-    /* margin: auto; */
     text-align: center;
     width: 50%;
     background: #1abc9c;
     color: white;
     font-size: 25px;
-    /* border: 3px solid #1abc9c; */
     padding: 10px;    
 }

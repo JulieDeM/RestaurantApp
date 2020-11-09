@@ -8,13 +8,13 @@ export default class Table extends React.Component{
     // let restaurantKeys = Object.keys(this.props.restaurants[1])  
     return (
       <>
-      <th>
-      Name
-      </th>
-      <th>City</th>
-      <th>State</th>
-      <th>Telephone</th>
-      <th>Genre</th>
+        <th>
+        Name
+        </th>
+        <th>City</th>
+        <th>State</th>
+        <th>Telephone</th>
+        <th>Genre</th>
       </>
     )
   };
@@ -50,21 +50,21 @@ export default class Table extends React.Component{
             <td>{state}</td>
             <td>{telephone}</td>
             <td className="genreContainer">
-              {genreArray.map(genre => <ul className={genre}>{genre}</ul>)}
+              {genreArray.map(genre => <ul key={genre} className={genre}>{genre}</ul>)}
             </td>
           </tr>
       )
     })
   };
 
-  renderPagination = () => {
-    this.props.pagesNeeded && this.props.pagesNeeded.map(num => {
-      let activePage = this.props.currentPage === num ? 'active' : '';
-      return (
-        <span key={num} className={activePage} onClick={() => this.props.fetchData(num)}>{num}</span>
-      );
-    })
-  }
+  // renderPagination = () => {
+  //   this.props.pagesNeeded && this.props.pagesNeeded.map(num => {
+  //     let activePage = this.props.currentPage === num ? 'active' : '';
+  //     return (
+  //       <span key={num} className={activePage} onClick={() => this.props.fetchData(num)}>{num}</span>
+  //     );
+  //   })
+  // }
 
   render(){
     return (

@@ -13,16 +13,11 @@ class App extends React.Component {
       enteredText: "",
       filtered: [] ,
       openFilterMenu: false,
-      restaurantPagination: null,
-      total: null,
       pagesNeeded: null,
       perPage: 10,
       currentPage: 1,
-      checkedAllStates: "checked",
-      filters: [],
-      genre: [],
-      state: [],
-      activeFilter: []
+      filter: [],
+      options: []
     };
     this.fetchData = this.fetchData.bind(this);
   }  
@@ -31,7 +26,7 @@ class App extends React.Component {
     this.fetchData();
   }
 
-  fetchData(pageNumb){
+  fetchData(){
     const apiUrl = 'https://code-challenge.spectrumtoolbox.com/api/restaurants';
     return fetch(apiUrl, {
         headers : { 
@@ -44,8 +39,8 @@ class App extends React.Component {
       .then((restaurants) => {
       // sort by name, no filter required on name so sorted here
       restaurants.sort(function(a, b) {
-        let prevName = a.name.toUpperCase(); // ignore upper and lowercase
-        let nextName = b.name.toUpperCase(); // ignore upper and lowercase
+        let prevName = a.name.toUpperCase(); 
+        let nextName = b.name.toUpperCase(); 
         if (prevName < nextName) {
           return -1;
         }
@@ -60,21 +55,19 @@ class App extends React.Component {
             pageNumbers.push(i);
         }
 
-    //get current restaurants
-    const indexOfLastRestaurant = 1 * 10;
-    const indexOfFirstRestaurant = indexOfLastRestaurant - 10;
-    const currentRestaurants = restaurants.slice(indexOfFirstRestaurant, indexOfLastRestaurant );
+      //get current restaurants
+      const indexOfLastRestaurant = 1 * 10;
+      const indexOfFirstRestaurant = indexOfLastRestaurant - 10;
+      const currentRestaurants = restaurants.slice(indexOfFirstRestaurant, indexOfLastRestaurant );
 
         this.setState({ 
           restaurants: restaurants,
           filtered: restaurants,
           filteredRestaurants: restaurants,
-          restaurantPagination: restaurants,
-          total: restaurants.length,
           perPage: 10,
           pagesNeeded: pageNumbers,
           currentPage: 1,
-          filterList: restaurants,
+          // filterList: restaurants,
           currentRestaurants: currentRestaurants
         });
       });
@@ -88,13 +81,8 @@ class App extends React.Component {
     });
   };
 
-  handleSearch(event){
-    // console.log(event.type)
-    // let code = event.keyCode || event.which;
-    // console.log(code)
-    // if(event.type === 'click' || event.type === 'onKeyPress'){
-    // if(code === 13 || event.type === 'click' ) { //13 is the enter keycode
-    let filteredRestaurants = this.state.restaurants.filter( restaurant => {
+  handleSearch = event => {
+    let filteredRestaurants = this.filteredRestaurants.restaurants.filter( restaurant => {
       return restaurant.name.indexOf(this.state.searchString) !== -1 
       || restaurant.genre.indexOf(this.state.searchString) !== -1 
       || restaurant.state.indexOf(this.state.searchString) !== -1
@@ -105,37 +93,46 @@ class App extends React.Component {
     }
     this.setState({
       searchString: event.target.value.substr(0, 20),
-      enteredText: event.target.value.substr(0, 20),
       filteredRestaurants: filteredRestaurants,
       pagesNeeded: pageNumbers
-    })
-    // }
+    });
   };
 
   onInputChange(event){
-    // console.log(event.type)
-     //@TODO: HANDLE SEARCH BUTTON
+
     let code = event.keyCode || event.which;
     if(code === 13 || event.type === 'click' ) { //13 is the enter keycode
-    let filteredRestaurants = this.state.restaurants.filter( restaurant => {
-      return restaurant.name.toLowerCase().indexOf(this.state.searchString) !== -1 
+    let filteredRestaurants = this.state.filteredRestaurants.filter( restaurant => {
+      //@TODO: REFACTOR CODE BELOW 
+      return restaurant.name.indexOf(this.state.searchString) !== -1 ||
+      restaurant.name.toLowerCase().indexOf(this.state.searchString) !== -1 ||
+      restaurant.name.toLowerCase().indexOf(this.state.searchString) !== -1 
+      || restaurant.genre.indexOf(this.state.searchString) !== -1 
       || restaurant.genre.toLowerCase().indexOf(this.state.searchString) !== -1 
+      || restaurant.genre.toUpperCase().indexOf(this.state.searchString) !== -1 
       || restaurant.state.toLowerCase().indexOf(this.state.searchString) !== -1
+      || restaurant.state.toUpperCase().indexOf(this.state.searchString) !== -1
       || restaurant.city.toLowerCase().indexOf(this.state.searchString) !== -1
+      || restaurant.city.toUpperCase().indexOf(this.state.searchString) !== -1
     });
     this.setState({
+      filter: filteredRestaurants,
       searchString: event.target.value.substr(0, 20),
-      enteredText: event.target.value.substr(0, 20),
-      filteredRestaurants: filteredRestaurants
+      // enteredText: event.target.value.substr(0, 20),
+      filteredRestaurants: filteredRestaurants, 
+      // options: [event.target.value.substr(0, 20)]
     })
     }
   };
 
-  onEnteredText(event){
-    this.setState({enteredText:event.target.value.substr(0, 20) })
+  onEnteredText = event => {
+    this.setState({
+      enteredText: event.target.value.substr(0, 20)
+    })
   };
 
-  resetSearch = () =>{
+  //reset search from button click 
+  resetSearch = () => {
     this.setState({
       searchString: '',
       enteredText: '',
@@ -143,73 +140,50 @@ class App extends React.Component {
     })
   };
 
-   //@TODO: FILTERING 
-  filterResults(type, val){
-    // console.log(type)
-    const { genre, state } = this.state;
-    // this.state.restaurants.filter(val => {
-    //   return (genre.length && genre.includes(val.genre)) ||
-    //   (state.length && state.includes(val.state)) 
-    //   })
-    // };
-    let filteredRestaurants = this.state.filteredRestaurants.filter( restaurant => {
-      return restaurant.name.indexOf(genre) !== -1 
-      || restaurant.genre.indexOf(state) !== -1 
+  onFilterChange = e => {
+    let newArray = [...this.state.options, e];
+    if(newArray.includes(e)){
+      newArray.slice(e)
+    } 
+     if (this.state.restaurants.includes(e)) {
+      newArray = newArray.filter(day => day !== e);
+    } 
+   
+    let filteredRestaurants = this.state.restaurants.filter( restaurant => {
+      return restaurant.genre.indexOf(e) !== -1 
+      || restaurant.genre.toLowerCase().indexOf(e) !== -1 
+      || restaurant.genre.toUpperCase().indexOf(e) !== -1 
+      || restaurant.state.indexOf(e) !== -1
+      || restaurant.state.toLowerCase().indexOf(e) !== -1
+      || restaurant.state.toUpperCase().indexOf(e) !== -1
     });
-    // this.setState({
-    //   // genre: val,
-    //   filteredRestaurants: filteredRestaurants
-    // })
-  };
+    this.setState({
+      filter: filteredRestaurants,
+      options: newArray,
+      filteredRestaurants: filteredRestaurants
+    })
+    };
 
-   //@TODO: FILTERING 
-  onFilterChange(filter) {
-    const { filterList, activeFilter } = this.state;
-    if (filter === "ALL") {
-      if (activeFilter.length === filterList.length) {
-        this.setState({ activeFilter: [] });
-      } else {
-        this.setState({ activeFilter: filterList.map(filter => filter.value) });
-      }
-    } else {
-      if (activeFilter.includes(filter)) {
-        const filterIndex = activeFilter.indexOf(filter);
-        const newFilter = [...activeFilter];
-        newFilter.splice(filterIndex, 1);
-        this.setState({ activeFilter: newFilter });
-      } else {
-        this.setState({ activeFilter: [...activeFilter, filter] });
-      }
-    }
-  }
+    handleCheckbox = event => {
+      let isChecked = event.target.checked;
+      let item = event.target.value;
+       
+      this.setState(prevState => ({ checkedItems: prevState.checkedItems.set(item, isChecked) }));
+    } 
 
-  changePage(pageNumb){
+
+  changePage = pageNumb => {
     this.setState({
       currentPage: pageNumb
     })
-  }
+  };
   
   render() {
-    //get current restaurants
+    //get first and last index for pagination
     const indexOfLastRestaurant = this.state.currentPage * this.state.perPage;
     const indexOfFirstRestaurant = indexOfLastRestaurant - this.state.perPage;
     const currentRestaurants = this.state.filteredRestaurants.slice(indexOfFirstRestaurant, indexOfLastRestaurant );
 
-
-    //@TODO: FILTERING 
-    //filtering 
-    const { filterList, activeFilter } = this.state;
-    let filteredList;
-    if (
-      activeFilter.length === 0 ||
-      activeFilter.length === filterList.length
-    ) {
-      filteredList = this.state.restaurants;
-    } else {
-      filteredList = this.state.restaurants.filter(item =>
-        this.state.activeFilter.includes(item.state)
-      );
-    }
     return (
       <div className="App">
         <Header
@@ -218,19 +192,17 @@ class App extends React.Component {
          enteredText={this.state.enteredText}
          handleTextChange={this.onEnteredText.bind(this)}
          resetSearch={this.resetSearch}
-         restaurants={this.state.restaurantPagination}
+         restaurants={this.state.restaurants}
          openFilterMenu={this.state.openFilterMenu}
          handleFilterMenuButton={this.handleFilterMenuButton}
-         checkedAllStates={this.state.checkedAllStates}
          handleSearch={this.handleSearch.bind(this)}
          filterResults={this.onFilterChange.bind(this)}
-         activeFilter={activeFilter}
-         filterList={filterList}
+         filterList={this.state.filteredRestaurants}
+         handleCheckbox={this.handleCheckbox.bind(this)}
          />
         <div className="Main">
           <Table 
           restaurants={currentRestaurants}
-          fetchData={this.fetchData}
           pagesNeeded={this.state.pagesNeeded}
           currentPage={this.state.currentPage}
           changePage={this.changePage.bind(this)}
