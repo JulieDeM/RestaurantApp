@@ -80,7 +80,7 @@ export default class Table extends React.Component{
               <span key={num} className={activePage} onClick={() => this.props.changePage(num)}>{num}</span>
             );
           })}
-          <p className="results-per-page">Results on this page: {this.props.restaurants.length}</p>
+          <p className="results-per-page">Results: {this.props.restaurants.length} out of {this.props.totalResults}</p>
         </div>
       </div>
     )

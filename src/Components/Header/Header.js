@@ -14,11 +14,13 @@ export default class Header extends React.Component {
           <FilterButton 
             handleFilterMenuButton={this.props.handleFilterMenuButton}
             openFilterMenu={this.props.openFilterMenu} //need
+            selectedRestaurants={this.props.selectedRestaurants}
             restaurants={this.props.restaurants}
             filterResults={this.props.filterResults}
             filterList={this.props.filterList}
             handleCheckbox={this.props.handleCheckbox}
             resetSearch={this.props.resetSearch}
+            onRestaurantsSelectChange={this.props.onRestaurantsSelectChange}
           />
           <SearchInput
             handleChange={this.props.handleChange}

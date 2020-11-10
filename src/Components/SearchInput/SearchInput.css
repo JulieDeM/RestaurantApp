@@ -57,3 +57,10 @@
   cursor: pointer;
   outline:none;
 }
+.filter-list{
+  border: 2px solid red;
+  padding-right: 3px;
+  padding-left: 3px;
+  border-radius: 25px;
+  margin-left: 5px;
+}

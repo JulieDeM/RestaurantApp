@@ -59,22 +59,3 @@
     flex-wrap: wrap; 
     overflow: wrap;
   }
-  .clearFilters{
-    border: 4px solid #1abc9c;
-    float: right;
-    padding: 6px;
-    background: none;
-    margin-left: -10px;
-    margin-right: 10px;
-    outline:none;
-  }
-  .clearFilters:hover{
-    border: 4px solid #1abc9c;
-    padding: 6px;
-    background: #1abc9c;
-    color: white;
-    margin-left: -10px;
-    margin-right: 10px;
-    cursor: pointer;
-    outline:none;
-  }

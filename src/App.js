@@ -68,7 +68,8 @@ class App extends React.Component {
           perPage: 10,
           pagesNeeded: pageNumbers,
           currentPage: 1,
-          currentRestaurants: currentRestaurants
+          currentRestaurants: currentRestaurants,
+          totalResults: restaurants.length
         });
       });
   };
@@ -103,7 +104,8 @@ class App extends React.Component {
     this.setState({
       searchString: event.target.value.substr(0, 20),
       filteredRestaurants: filteredRestaurants,
-      pagesNeeded: pageNumbers
+      pagesNeeded: pageNumbers,
+      totalResults: filteredRestaurants.length
     });
   };
 
@@ -136,6 +138,7 @@ class App extends React.Component {
       filter: filteredRestaurants,
       searchString: event.target.value.substr(0, 20),
       filteredRestaurants: filteredRestaurants, 
+      totalResults: filteredRestaurants.length,
       pagesNeeded: pageNumbers //update page numbers needed
       // options: [event.target.value.substr(0, 20)]
     })
@@ -149,7 +152,9 @@ class App extends React.Component {
   };
 
   //reset search from button click 
-  resetSearch = () => {
+  resetSearch = event => {
+    console.log('event in reset')
+    console.log(event)
     const pageNumbers = [];
     for (let i = 1; i <= Math.ceil(this.state.restaurants.length / 10); i++) {
         pageNumbers.push(i);
@@ -159,7 +164,8 @@ class App extends React.Component {
       enteredText: '',
       filteredRestaurants: this.state.restaurants,
       pagesNeeded: pageNumbers, //reset page numbers needed
-      options: []
+      options: [],
+      totalResults: this.state.restaurants.length
     })
   };
 
@@ -194,6 +200,12 @@ class App extends React.Component {
       this.setState(prevState => ({ checkedItems: prevState.checkedItems.set(item, isChecked) }));
     } 
 
+    onRestaurantsSelectChange = (event) => {
+      this.setState({
+        restaurantValue: event.currentTarget.value
+      })
+    }
+
 
   changePage = pageNumb => {
     this.setState({
@@ -213,7 +225,7 @@ class App extends React.Component {
          handleChange={this.onInputChange.bind(this)}
          searchString={this.state.searchString}
          enteredText={this.state.enteredText}
-         handleTextChange={this.onEnteredText.bind(this)}
+        //  handleTextChange={this.onEnteredText.bind(this)}
          resetSearch={this.resetSearch}
          restaurants={this.state.restaurants}
          openFilterMenu={this.state.openFilterMenu}
@@ -223,6 +235,7 @@ class App extends React.Component {
          filterList={this.state.filteredRestaurants}
          handleCheckbox={this.handleCheckbox.bind(this)}
          options={this.state.options}
+         onRestaurantsSelectChange={this.state.onRestaurantsSelectChange}
          />
         <div className="Main">
           <Table 
@@ -230,6 +243,7 @@ class App extends React.Component {
           pagesNeeded={this.state.pagesNeeded}
           currentPage={this.state.currentPage}
           changePage={this.changePage.bind(this)}
+          totalResults={this.state.totalResults}
           />
         </div>
       </div>
